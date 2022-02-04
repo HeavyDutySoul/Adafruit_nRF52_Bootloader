@@ -22,7 +22,7 @@ endif
 SD_FILENAME  = $(SD_NAME)_nrf52_$(SD_VERSION)
 SD_HEX       = $(SD_PATH)/$(SD_FILENAME)_softdevice.hex
 
-MBR_HEX			 = lib/softdevice/mbr/hex/mbr_nrf52_2.4.1_mbr.hex
+MBR_HEX      = lib/softdevice/mbr/hex/mbr_nrf52_2.4.1_mbr.hex
 
 # linker by MCU eg. nrf52840.ld
 LD_FILE      = linker/$(MCU_SUB_VARIANT).ld
@@ -181,20 +181,20 @@ C_SRC += src/boards/$(BOARD)/pinconfig.c
 
 # USB Application ( MSC + UF2 )
 C_SRC += \
-	src/usb/msc_uf2.c \
-	src/usb/usb_desc.c \
-	src/usb/usb.c \
-	src/usb/uf2/ghostfat.c
+  src/usb/msc_uf2.c \
+  src/usb/usb_desc.c \
+  src/usb/usb.c \
+  src/usb/uf2/ghostfat.c
 
 # TinyUSB stack
 C_SRC += \
-	$(TUSB_PATH)/portable/nordic/nrf5x/dcd_nrf5x.c \
-	$(TUSB_PATH)/common/tusb_fifo.c \
-	$(TUSB_PATH)/device/usbd.c \
-	$(TUSB_PATH)/device/usbd_control.c \
-	$(TUSB_PATH)/class/cdc/cdc_device.c \
-	$(TUSB_PATH)/class/msc/msc_device.c \
-	$(TUSB_PATH)/tusb.c
+  $(TUSB_PATH)/portable/nordic/nrf5x/dcd_nrf5x.c \
+  $(TUSB_PATH)/common/tusb_fifo.c \
+  $(TUSB_PATH)/device/usbd.c \
+  $(TUSB_PATH)/device/usbd_control.c \
+  $(TUSB_PATH)/class/cdc/cdc_device.c \
+  $(TUSB_PATH)/class/msc/msc_device.c \
+  $(TUSB_PATH)/tusb.c
 
 endif
 
@@ -248,32 +248,32 @@ IPATH += $(SD_PATH)/$(SD_FILENAME)_API/include/nrf52
 
 #flags common to all targets
 CFLAGS += \
-	-mthumb \
-	-mabi=aapcs \
-	-mcpu=cortex-m4 \
-	-mfloat-abi=hard \
-	-mfpu=fpv4-sp-d16 \
-	-Os \
-	-ffunction-sections \
-	-fdata-sections \
-	-fno-builtin \
-	-fshort-enums \
-	-fstack-usage \
-	-fno-strict-aliasing \
-	-Wall \
-	-Wextra \
-	-Werror \
-	-Wfatal-errors \
-	-Werror-implicit-function-declaration \
-	-Wfloat-equal \
-	-Wundef \
-	-Wshadow \
-	-Wwrite-strings \
-	-Wsign-compare \
-	-Wmissing-format-attribute \
-	-Wno-endif-labels \
-	-Wunreachable-code \
-	-ggdb
+  -mthumb \
+  -mabi=aapcs \
+  -mcpu=cortex-m4 \
+  -mfloat-abi=hard \
+  -mfpu=fpv4-sp-d16 \
+  -Os \
+  -ffunction-sections \
+  -fdata-sections \
+  -fno-builtin \
+  -fshort-enums \
+  -fstack-usage \
+  -fno-strict-aliasing \
+  -Wall \
+  -Wextra \
+  -Werror \
+  -Wfatal-errors \
+  -Werror-implicit-function-declaration \
+  -Wfloat-equal \
+  -Wundef \
+  -Wshadow \
+  -Wwrite-strings \
+  -Wsign-compare \
+  -Wmissing-format-attribute \
+  -Wno-endif-labels \
+  -Wunreachable-code \
+  -ggdb
 
 # Suppress warning caused by SDK
 CFLAGS += -Wno-unused-parameter -Wno-expansion-to-defined
@@ -295,7 +295,7 @@ endif
 
 # Defined Symbol (MACROS)
 CFLAGS += -D__HEAP_SIZE=0
-CFLAGS += -DCONFIG_GPIO_AS_PINRESET
+#CFLAGS += -DCONFIG_GPIO_AS_PINRESET
 
 # Skip defining CONFIG_NFCT_PINS_AS_GPIOS if the device uses the NFCT.
 ifneq ($(USE_NFCT),yes)
@@ -322,10 +322,10 @@ endif
 #------------------------------------------------------------------------------
 
 LDFLAGS += \
-	$(CFLAGS) \
-	-Wl,-L,linker -Wl,-T,$(LD_FILE) \
-	-Wl,-Map=$@.map -Wl,-cref -Wl,-gc-sections \
-	-specs=nosys.specs -specs=nano.specs
+  $(CFLAGS) \
+  -Wl,-L,linker -Wl,-T,$(LD_FILE) \
+  -Wl,-Map=$@.map -Wl,-cref -Wl,-gc-sections \
+  -specs=nosys.specs -specs=nano.specs
 
 LIBS += -lm -lc
 
@@ -364,72 +364,72 @@ all: $(BUILD)/$(OUT_NAME).out $(BUILD)/$(OUT_NAME)_nosd.hex $(BUILD)/update-$(OU
 # Print out the value of a make variable.
 # https://stackoverflow.com/questions/16467718/how-to-print-out-a-variable-in-makefile
 print-%:
-	@echo $* = $($*)
+  @echo $* = $($*)
 
 #------------------- Compile rules -------------------
 
 # Create build directories
 $(BUILD):
-	@$(MKDIR) "$@"
+  @$(MKDIR) "$@"
 
 clean:
-	@$(RM) $(BUILD)
-	@$(RM) $(BIN)
+  @$(RM) $(BUILD)
+  @$(RM) $(BIN)
 
 # linkermap must be install previously at https://github.com/hathach/linkermap
 linkermap: $(BUILD)/$(OUT_NAME).out
-	@linkermap -v $<.map
+  @linkermap -v $<.map
 
 # Create objects from C SRC files
 $(BUILD)/%.o: %.c
-	@echo CC $(notdir $<)
-	@$(CC) $(CFLAGS) $(INC_PATHS) -c -o $@ $<
+  @echo CC $(notdir $<)
+  @$(CC) $(CFLAGS) $(INC_PATHS) -c -o $@ $<
 
 # Assemble files
 $(BUILD)/%.o: %.S
-	@echo AS $(notdir $<)
-	@$(CC) -x assembler-with-cpp $(ASFLAGS) $(INC_PATHS) -c -o $@ $<
+  @echo AS $(notdir $<)
+  @$(CC) -x assembler-with-cpp $(ASFLAGS) $(INC_PATHS) -c -o $@ $<
 
 # Link
 $(BUILD)/$(OUT_NAME).out: $(BUILD) $(OBJECTS)
-	@echo LD $(notdir $@)
-	@$(CC) -o $@ $(LDFLAGS) $(OBJECTS) -Wl,--start-group $(LIBS) -Wl,--end-group
-	@$(SIZE) $@
+  @echo LD $(notdir $@)
+  @$(CC) -o $@ $(LDFLAGS) $(OBJECTS) -Wl,--start-group $(LIBS) -Wl,--end-group
+  @$(SIZE) $@
 
 #------------------- Binary generator -------------------
 
 # Create hex file (no sd, no mbr)
 $(BUILD)/$(OUT_NAME).hex: $(BUILD)/$(OUT_NAME).out
-	@echo Create $(notdir $@)
-	@$(OBJCOPY) -O ihex $< $@
+  @echo Create $(notdir $@)
+  @$(OBJCOPY) -O ihex $< $@
 
 # Hex file with mbr (still no SD)
 $(BUILD)/$(OUT_NAME)_nosd.hex: $(BUILD)/$(OUT_NAME).hex
-	@echo Create $(notdir $@)
-	@python3 tools/hexmerge.py --overlap=replace -o $@ $< $(MBR_HEX)
+  @echo Create $(notdir $@)
+  @python3 tools/hexmerge.py --overlap=replace -o $@ $< $(MBR_HEX)
 
 # Bootolader self-update uf2
 $(BUILD)/update-$(OUT_NAME)_nosd.uf2: $(BUILD)/$(OUT_NAME)_nosd.hex
-	@echo Create $(notdir $@)
-	@python3 lib/uf2/utils/uf2conv.py -f 0xd663823c -c -o $@ $^
+  @echo Create $(notdir $@)
+  @python3 lib/uf2/utils/uf2conv.py -f 0xd663823c -c -o $@ $^
 
 # merge bootloader and sd hex together
 $(BUILD)/$(MERGED_FILE).hex: $(BUILD)/$(OUT_NAME).hex
-	@echo Create $(notdir $@)
-	@python3 tools/hexmerge.py -o $@ $< $(SD_HEX)
+  @echo Create $(notdir $@)
+  @python3 tools/hexmerge.py -o $@ $< $(SD_HEX)
 
 # Create pkg zip file for bootloader+SD combo to use with DFU CDC
 $(BUILD)/$(MERGED_FILE).zip: $(BUILD)/$(OUT_NAME).hex
-	@$(NRFUTIL) dfu genpkg --dev-type 0x0052 --dev-revision $(DFU_DEV_REV) --bootloader $< --softdevice $(SD_HEX) $@
+  @$(NRFUTIL) dfu genpkg --dev-type 0x0052 --dev-revision $(DFU_DEV_REV) --bootloader $< --softdevice $(SD_HEX) $@
 
 #-------------- Artifacts --------------
 $(BIN):
-	@$(MKDIR) -p $@
+  @$(MKDIR) -p $@
 
 copy-artifact: $(BIN)
-	@$(CP) $(BUILD)/update-$(OUT_NAME)_nosd.uf2 $(BIN)
-	@$(CP) $(BUILD)/$(MERGED_FILE).hex $(BIN)
-	@$(CP) $(BUILD)/$(MERGED_FILE).zip $(BIN)
+  @$(CP) $(BUILD)/update-$(OUT_NAME)_nosd.uf2 $(BIN)
+  @$(CP) $(BUILD)/$(MERGED_FILE).hex $(BIN)
+  @$(CP) $(BUILD)/$(MERGED_FILE).zip $(BIN)
 
 #------------------- Flash target -------------------
 
@@ -442,35 +442,35 @@ __check_defined = \
 
 # Flash the compiled
 flash: $(BUILD)/$(OUT_NAME)_nosd.hex
-	@echo Flashing: $(notdir $<)
-	$(call FLASH_CMD,$<)
+  @echo Flashing: $(notdir $<)
+  $(call FLASH_CMD,$<)
 
 erase:
-	@echo Erasing flash
-	$(call FLASH_ERASE_CMD)
+  @echo Erasing flash
+  $(call FLASH_ERASE_CMD)
 
 # flash SD only
 sd:
-	@echo Flashing: $(SD_HEX)
-	$(call FLASH_NOUICR_CMD,$(SD_HEX))
+  @echo Flashing: $(SD_HEX)
+  $(call FLASH_NOUICR_CMD,$(SD_HEX))
 
 # flash MBR only
 mbr:
-	@echo Flashing: $(MBR_HEX)
-	$(call FLASH_NOUICR_CMD,$(MBR_HEX))
+  @echo Flashing: $(MBR_HEX)
+  $(call FLASH_NOUICR_CMD,$(MBR_HEX))
 
 #------------------- Flash with NRFUTIL via DFU -------------------
 
 # dfu using CDC interface
 dfu-flash: $(BUILD)/$(MERGED_FILE).zip
-	@:$(call check_defined, SERIAL, example: SERIAL=/dev/ttyACM0)
-	$(NRFUTIL) --verbose dfu serial --package $< -p $(SERIAL) -b 115200 --singlebank --touch 1200
+  @:$(call check_defined, SERIAL, example: SERIAL=/dev/ttyACM0)
+  $(NRFUTIL) --verbose dfu serial --package $< -p $(SERIAL) -b 115200 --singlebank --touch 1200
 
 #------------------- Debugging -------------------
 
 gdbflash: $(BUILD)/$(MERGED_FILE).hex
-	@echo Flashing: $<
-	@$(GDB_BMP) -nx --batch -ex 'load $<' -ex 'compare-sections' -ex 'kill'
+  @echo Flashing: $<
+  @$(GDB_BMP) -nx --batch -ex 'load $<' -ex 'compare-sections' -ex 'kill'
 
 gdb: $(BUILD)/$(OUT_NAME).out
-	$(GDB_BMP) $<
+  $(GDB_BMP) $<
